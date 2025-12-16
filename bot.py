@@ -102,9 +102,9 @@ async def balance(ctx):
     chips = get_wallet(ctx.author.id)
     await ctx.send(f"🛰️ {ctx.author.mention} has **{chips}** cosmic chips.")
 
-@bot.command(name="addtokens")
+@bot.command(name="addchips")
 @commands.has_role(CASHIER_ROLE_NAME)
-async def addtokens(ctx, member: discord.user, amount: int):
+async def addchipc (ctx, member: discord.user, amount: int):
     if amount == 0:
         return await ctx.send("Amount must be non-zero.")
 
@@ -252,12 +252,12 @@ async def withdraw(ctx: commands.Context, amount: int, *, note: str = ""):
     await ctx.send(content=f"{cashier_ping} New withdrawal request!", embed=embed)
     await ctx.send("✅ Withdrawal request submitted. A cashier will assist you here.")
 
-@addtokens.error
-async def addtokens_error(ctx, error):
+@addchips.error
+async def addchips_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
-        await ctx.send("❌ You must be an Administrator to use `!addtokens`.")
+        await ctx.send("❌ You must be an Administrator to use `!addchips`.")
     elif isinstance(error, commands.BadArgument):
-        await ctx.send("Usage: `!addtokens @user <amount>`")
+        await ctx.send("Usage: `!addchips @user <amount>`")
     else:
         await ctx.send(f"❌ Error: {error}")
 
@@ -265,6 +265,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
