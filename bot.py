@@ -13,6 +13,8 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 DATA_FILE = "economy.json"
 
+CASHIER_ROLE_NAME = "Cashier"
+
 CASHIER_ROLE_NAME = "Cashier"  # must match the role name exactly
 WITHDRAW_MIN = 1
 
@@ -101,7 +103,7 @@ async def balance(ctx):
     await ctx.send(f"🛰️ {ctx.author.mention} has **{chips}** cosmic chips.")
 
 @bot.command(name="addtokens")
-@commands.has_permissions(administrator=True)
+@commands.has_role(CASHIER_ROLE_NAME)
 async def addtokens(ctx, member: discord.user, amount: int):
     if amount == 0:
         return await ctx.send("Amount must be non-zero.")
@@ -263,5 +265,6 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
