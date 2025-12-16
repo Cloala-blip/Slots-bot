@@ -104,13 +104,13 @@ async def balance(ctx):
 
 @bot.command(name="addchips")
 @commands.has_role(CASHIER_ROLE_NAME)
-async def addchipc (ctx, member: discord.user, amount: int):
+async def addchips(ctx, member: discord.User, amount: int):
     if amount == 0:
         return await ctx.send("Amount must be non-zero.")
 
     new_bal = add_wallet(member.id, amount)
     await ctx.send(
-        f"🪙 {member.mention} received **{amount}** cosmic tokens.\n"
+        f"🪙 {member.mention} received **{amount}** cosmic chips.\n"
         f"💰 New balance: **{new_bal}**"
     )
 
@@ -265,6 +265,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
