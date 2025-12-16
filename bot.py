@@ -250,8 +250,18 @@ async def withdraw(ctx: commands.Context, amount: int, *, note: str = ""):
     await ctx.send(content=f"{cashier_ping} New withdrawal request!", embed=embed)
     await ctx.send("✅ Withdrawal request submitted. A cashier will assist you here.")
 
+@addtokens.error
+async def addtokens_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("❌ You must be an Administrator to use `!addtokens`.")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send("Usage: `!addtokens @user <amount>`")
+    else:
+        await ctx.send(f"❌ Error: {error}")
+
 if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
