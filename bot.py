@@ -85,12 +85,13 @@ def spin_reel() -> str:
         k=1
     )[0]
 
-def payout_multiplier(r1: str, r2: str, r3: str) -> int:
+def payout_multiplier(r1: str, r2: str, r3: str) -> float:
     if r1 == r2 == r3:
-        return THREE_KIND_PAYOUTS.get(r1, 0)
-    if r1 == r2 or r2 == r3 or r1 == r3:
-        return 1
-    return 0
+        return float(THREE_KIND_PAYOUTS.get(r1, 0))
+    # only adjacent 2-match (see step 2)
+    if r1 == r2 or r2 == r3:
+        return 0.25
+    return 0.0
 
 # ================== COMMANDS ==================
 @bot.event
@@ -136,8 +137,8 @@ async def slots(ctx, amount: int):
     if mult == 0:
         embed.add_field(name="Outcome", value=f"Lost **{amount}** chips drifting through space.")
     else:
-        winnings = amount * mult
-        add_wallet(ctx.author.id, amount + winnings)
+      winnings = int(amount * mult)  # floors decimals (e.g., 10 * 0.25 = 2)
+add_wallet(ctx.author.id, amount + winnings)
         embed.add_field(name="Outcome", value=f"🚀 Mission success! Won **{winnings}** chips (x{mult}).")
 
     embed.add_field(name="Balance", value=f"💰 {get_wallet(ctx.author.id)}", inline=False)
@@ -195,7 +196,7 @@ async def rules(ctx):
     embed.add_field(
         name="✨ Matching Rules",
         value=(
-            "• **Any 2 matching symbols** = **x1 profit**\n"
+            "• **2 adjacent matching symbols** = **x.25 profit**\n"
             "• **3 matching symbols** = special payout (see table below)\n"
             "• No matches = you lose your bet"
         ),
@@ -265,6 +266,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
