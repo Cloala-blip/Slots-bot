@@ -133,22 +133,16 @@ async def slots(ctx, amount: int):
         title="🌌 Starfarer Slots",
         description=f"🎰 | {r1} | {r2} | {r3} |"
     )
-    
+
     if mult == 0:
-        embed.add_field(
-            name="Outcome",
-            value=f"Lost **{amount}** chips drifting through space."
-        )
+        embed.add_field(name="Outcome", value=f"Lost **{amount}** chips drifting through space.")
     else:
-        # Pay total = bet * 1.25 for adjacent 2-match (mult=0.25)
-        # and for 3-of-a-kind it pays bet * (1 + mult)
         total_payout = int(amount * (1 + mult))
         add_wallet(ctx.author.id, total_payout)
+        embed.add_field(name="Outcome", value=f"🚀 Mission success! Paid **{total_payout}** chips (x{1 + mult}).")
 
-        embed.add_field(
-            name="Outcome",
-            value=f"🚀 Mission success! Paid **{total_payout}** chips (x{1 + mult})."
-        )
+    embed.add_field(name="Balance", value=f"💰 {get_wallet(ctx.author.id)}", inline=False)
+    await ctx.send(embed=embed)       
 
 @bot.command(name="help")
 async def help_command(ctx):
@@ -272,6 +266,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
