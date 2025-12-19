@@ -134,19 +134,21 @@ async def slots(ctx, amount: int):
         description=f"🎰 | {r1} | {r2} | {r3} |"
     )
 
-    if mult == 0:
-        embed.add_field(name="Outcome", value=f"Lost **{amount}** chips drifting through space.")
+       if mult == 0:
+        embed.add_field(
+            name="Outcome",
+            value=f"Lost **{amount}** chips drifting through space."
+        )
     else:
-    if mult == 0:
-    embed.add_field(name="Outcome", value=f"Lost **{amount}** chips drifting through space.")
-else:
-    total_payout = int(amount * (1 + mult))  # for 0.25 => 1.25x total
-    add_wallet(ctx.author.id, total_payout)
+        # total payout includes returning the bet
+        total_payout = int(amount * (1 + mult))  # 0.25 => 1.25x total
+        add_wallet(ctx.author.id, total_payout)
 
-    embed.add_field(
-        name="Outcome",
-        value=f"🚀 Mission success! Paid **{total_payout}** chips (x{1+mult})."
-    )
+        embed.add_field(
+            name="Outcome",
+            value=f"🚀 Mission success! Paid **{total_payout}** chips (x{1 + mult})."
+        )
+
         embed.add_field(name="Outcome", value=f"🚀 Mission success! Won **{winnings}** chips (x{mult}).")
 
     embed.add_field(name="Balance", value=f"💰 {get_wallet(ctx.author.id)}", inline=False)
@@ -274,6 +276,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
