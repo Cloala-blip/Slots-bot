@@ -124,8 +124,10 @@ async def slots(ctx, amount: int):
     if amount > wallet:
         return await ctx.send(f"❌ You only have **{wallet}** chips.")
 
+    # deduct bet
     add_wallet(ctx.author.id, -amount)
 
+    # spin + compute multiplier
     r1, r2, r3 = spin_reel(), spin_reel(), spin_reel()
     mult = payout_multiplier(r1, r2, r3)
 
@@ -134,13 +136,14 @@ async def slots(ctx, amount: int):
         description=f"🎰 | {r1} | {r2} | {r3} |"
     )
 
-        if mult == 0:
+    if mult == 0:
         embed.add_field(
             name="Outcome",
             value=f"Lost **{amount}** chips drifting through space."
         )
     else:
-        total_payout = int(amount * (1 + mult))
+        # total payout includes returning the bet
+        total_payout = int(amount * (1 + mult))  # 0.25 => 1.25x total
         add_wallet(ctx.author.id, total_payout)
         embed.add_field(
             name="Outcome",
@@ -276,6 +279,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
