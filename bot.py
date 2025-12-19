@@ -137,7 +137,7 @@ async def slots(ctx, amount: int):
     if mult == 0:
         embed.add_field(name="Outcome", value=f"Lost **{amount}** chips drifting through space.")
     else:
-      winnings = int(amount * mult)  # floors decimals (e.g., 10 * 0.25 = 2)
+      winnings = max(1, int(amount * mult))  # floors decimals (e.g., 10 * 0.25 = 2)
 add_wallet(ctx.author.id, amount + winnings)
         embed.add_field(name="Outcome", value=f"🚀 Mission success! Won **{winnings}** chips (x{mult}).")
 
@@ -266,6 +266,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
