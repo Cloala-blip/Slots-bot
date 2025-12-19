@@ -141,8 +141,12 @@ async def slots(ctx, amount: int):
         add_wallet(ctx.author.id, total_payout)
         embed.add_field(name="Outcome", value=f"🚀 Mission success! Paid **{total_payout}** chips (x{1 + mult}).")
 
-    embed.add_field(name="Balance", value=f"💰 {get_wallet(ctx.author.id)}", inline=False)
-    await ctx.send(embed=embed)       
+       embed.add_field(
+        name="Balance",
+        value=f"💰 {get_wallet(ctx.author.id)}",
+        inline=False
+    )
+    await ctx.send(embed=embed)
 
 @bot.command(name="help")
 async def help_command(ctx):
@@ -266,6 +270,7 @@ if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError("DISCORD_TOKEN missing in .env")
     bot.run(TOKEN)
+
 
 
 
